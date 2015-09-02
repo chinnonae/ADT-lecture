@@ -3,83 +3,78 @@ import java.util.ArrayList;
 
 public class PermuteK {
 	
-	public static ArrayList<String> permuteK(String string, int length ){
-		ArrayList<String> switchedStrings = switchFirstLetter(string, 0);
-		return permuteStrings(switchedStrings, length, 0);
-	}
 	
-	public static ArrayList<String> permuteStrings (ArrayList<String> switchedStrings, int length, int index){
+	public static ArrayList<String> permuteK(String string, int length){
 		
-		if(index >= switchedStrings.size()){
-			return null;
-		}
+		ArrayList<String> strings = new ArrayList<String>();
+		strings.add(string);
 		
-		System.out.println("switchedStrings@permuteStrings : " + switchedStrings.get(index));
-		ArrayList<String> strings = permuteStrings (switchedStrings, length , index + 1);
-		
-		if(strings == null){
-			strings = new ArrayList<String>();
-		}
-		ArrayList<String> temp = permute(switchedStrings.get(index),length);
-		System.out.println("permute@permuteStrings : " + switchedStrings.get(index));
-		strings.addAll(temp);
+		strings = permuteK(strings, length, 0);
+		cutString(strings, length, 0);
 		
 		return strings;
 		
+	}
+	
+	public static void cutString(ArrayList<String> strings, int length, int index){
+		if(index == strings.size()) return;
+		String string = strings.get(index);
+		string = string.substring(string.length()-length);
+		strings.set(index, string);
+		cutString(strings, length, index+1);
 		
 	}
 	
-	public static ArrayList<String> permute(String string, int length){
-		ArrayList<String> strings = new ArrayList<String>();
-		
-		if(length == 1 ){
-			for(int i = 0; i < string.length(); i++){
-				strings.add(string.charAt(i)+"");
-			}
+	public static ArrayList<String> permuteK(ArrayList<String> strings, int length, int level){
+		ArrayList<String> permuted;
+		if( length <= 0 ){
 			return strings;
 		}
+		permuted = permuteK(strings, length - 1, level + 1);
 		
-		
-		strings = permute(string.substring(1), length-1);
-		
-		ArrayList<String> permuted = new ArrayList<String>();
 		ArrayList<String> temp = new ArrayList<String>();
-		for(String s : strings){
-			temp.addAll(switchFirstLetter(s, 0));
-		}
-		for(String s : temp){
-			permuted.add(string.charAt(0)+s);
-			System.out.println("string@permute : " + string.charAt(0)+s);
+		
+		for(String s : permuted){
+			temp.addAll(moveLetter(s, 0, level));
 		}
 		
-		strings = permuted;
-		return strings;
+		return temp;
+		
 	}
 	
-	public static ArrayList<String> switchFirstLetter(String string, int switchIndex){
-	
-		if(string.length() == switchIndex){
+	public static ArrayList<String> moveLetter(String string, int index, int level){
+		if(index >= string.length()-level){
 			return null;
 		}
-		ArrayList<String> strings = switchFirstLetter(string, switchIndex+1);
-		
-		if(strings == null){
-			strings = new ArrayList<String>();
+		ArrayList<String> switched = moveLetter(string, index + 1, level);
+		if(switched == null){
+			switched = new ArrayList<String>();
 		}
-		strings.add(string.charAt(switchIndex)+string.substring(0, switchIndex)+string.substring(switchIndex + 1 , string.length()));
-		System.out.println("swtichedString@swtichFirstLetter : " + strings.get(strings.size()-1));
-		return strings;
 		
-	};
+		String temp = "";
+		
+		for(int i = 0 ; i < string.length(); i++){
+			if(i==index) continue;
+			temp += string.charAt(i);
+		}
+		temp += string.charAt(index);
+		switched.add(temp);
+		return switched;
+		
+	}
+	
+	
+	
 	
 	
 	
 	public static void main(String[]args){
-		ArrayList<String> list = permute("abcdef", 3);
-		list.sort(String.CASE_INSENSITIVE_ORDER);
-		for(String str : list){
-			System.out.println(str);
+		ArrayList<String> s = permuteK("abcdef", 3);
+		s.sort(String.CASE_INSENSITIVE_ORDER);
+		for(String a : s){
+			System.out.println(a);
 		}
-		System.out.println(list.size());
+		System.out.println(s.size());
+		
 	}
 }
