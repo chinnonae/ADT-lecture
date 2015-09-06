@@ -44,16 +44,38 @@ public class Maze {
 		}
 		
 		System.out.println("Maze x: " + maze[0].length + "  Maze y: " + maze.length);
+		ArrayList<String> result = solve(1,29,1,29);
+		System.out.println(result.size());
 	}
 	
 	public static ArrayList<String> solve(int x, int y, int prevX, int prevY){
-		
+		ArrayList<String> arr = new ArrayList<String>();
+		System.out.println(x + " - " + y + "'" + maze[y][x] + "'");
 		if(maze[y][x] == 'f'){
-			ArrayList<String> arr = new ArrayList<String>();
 			arr.add(x+","+y);
 			return arr;
 		}
-		return null;
+		
+		
+		if(x-1 >= 0 && x-1 != prevX && maze[y][x-1] == ' '){
+			arr.addAll(solve(x-1, y, x, y));
+		}
+		if(x+1 < maze[0].length && x+1 != prevX && maze[y][x+1] == ' '){
+			arr.addAll(solve(x+1, y, x, y));
+		}
+		if(y-1 >= 0 && y-1 != prevY && maze[y-1][x] == ' '){
+			arr.addAll(solve(x, y-1, x, y));
+		}
+		if(y+1 < maze.length && y+1 != prevY && maze[y+1][x] == ' '){
+			arr.addAll(solve(x, y+1, x , y));
+		}
+		if(arr.size() > 0){
+			arr.add(x+","+y);
+			return arr;
+		}
+		return new ArrayList<String>();
+		
+		
 		
 	}
 	
