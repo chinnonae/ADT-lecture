@@ -35,38 +35,48 @@ public class Maze {
 
 	
 	public static void main(String[] args) {
-	
+		ArrayList<String> result = solve(1,29,1,29);
+		char [][] path = new char [30][45];
+		for(String s : result){
+			String[] ss = s.split(",");
+			int y = Integer.parseInt(ss[1]);
+			int x = Integer.parseInt(ss[0]);
+			path[y][x] = '+';
+		}
 		for (int i=0; i<30; i++) {
 			for (int j=0; j<maze[0].length; j++) {
-				System.out.print(maze[i][j]);
+				if(path[i][j] == '+' && maze[i][j] == ' '){
+					System.out.print(path[i][j]);
+				} else {
+					System.out.print(maze[i][j]);
+				}
+				
 			}
 			System.out.println("");
 		}
 		
-		System.out.println("Maze x: " + maze[0].length + "  Maze y: " + maze.length);
-		ArrayList<String> result = solve(1,29,1,29);
-		System.out.println(result.size());
+		
+		
 	}
 	
 	public static ArrayList<String> solve(int x, int y, int prevX, int prevY){
 		ArrayList<String> arr = new ArrayList<String>();
-		System.out.println(x + " - " + y + "'" + maze[y][x] + "'");
 		if(maze[y][x] == 'f'){
 			arr.add(x+","+y);
 			return arr;
 		}
 		
 		
-		if(x-1 >= 0 && x-1 != prevX && maze[y][x-1] == ' '){
+		if(x-1 >= 0 && x-1 != prevX && (maze[y][x-1] == ' ' || maze[y][x-1] == 'f')){
 			arr.addAll(solve(x-1, y, x, y));
 		}
-		if(x+1 < maze[0].length && x+1 != prevX && maze[y][x+1] == ' '){
+		if(x+1 < maze[0].length && x+1 != prevX && (maze[y][x+1] == ' ' || maze[y][x+1] == 'f')){
 			arr.addAll(solve(x+1, y, x, y));
 		}
-		if(y-1 >= 0 && y-1 != prevY && maze[y-1][x] == ' '){
+		if(y-1 >= 0 && y-1 != prevY && (maze[y-1][x] == ' ' || maze[y-1][x] == 'f')){
 			arr.addAll(solve(x, y-1, x, y));
 		}
-		if(y+1 < maze.length && y+1 != prevY && maze[y+1][x] == ' '){
+		if(y+1 < maze.length && y+1 != prevY && (maze[y+1][x] == ' ' || maze[y+1][x] == 'f')){
 			arr.addAll(solve(x, y+1, x , y));
 		}
 		if(arr.size() > 0){
