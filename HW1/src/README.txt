@@ -1,5 +1,6 @@
 Problem 1: Rec.java
-	This class contain lots of recursive methods, 	
+	This class contain lots of recursive methods each one do a specific task, such as
+	counting number of a character in string.
 	
 Problem 2: PermuteK.java
 	This class, take string and int input which are characters and length of the output String.
