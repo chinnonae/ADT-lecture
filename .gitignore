@@ -7,3 +7,5 @@ bin/
 out/
 .idea/
 HW1.iml
+~
+.tmp
