@@ -297,7 +297,7 @@ public final class StdDraw implements ActionListener, MouseListener, MouseMotion
     public static void setPenRadius(double r) {
         if (r < 0) throw new RuntimeException("pen radius must be positive");
         penRadius = r * DEFAULT_SIZE;
-        BasicStroke stroke = new BasicStroke((float) penRadius, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+        BasicStroke stroke = new BasicStroke((float) penRadius, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND);
         // BasicStroke stroke = new BasicStroke((float) penRadius);
         offscreen.setStroke(stroke);
     }
