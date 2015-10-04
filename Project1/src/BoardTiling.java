@@ -8,12 +8,13 @@ public class BoardTiling {
 	static BoardTiling instance;
 	static double penSize;
 	static int boardSize;
+	static boolean decor;
 	
-	public static void tileBoard(int size){
+	public static void tileBoard(int size, boolean decor){
 		double n = Math.pow(2, size);
 		int x = (int) Math.floor(Math.random()*n);
 		int y = (int) Math.floor(Math.random()*n);
-		tileBoard(size, x, y);
+		tileBoard(size, x, y, decor);
 	}
 	
 	private BoardTiling(){
@@ -36,15 +37,19 @@ public class BoardTiling {
 		return instance;
 	}
 	
-	public static void tileBoard(int size, int x, int y){
+	public static void tileBoard(int size, int x, int y, boolean decoration){
+		decor = decoration;
 		boardSize = (int) Math.pow(2, size);
 		penSize = (((double)boardSize)+screenSize)/(boardSize*screenSize)*0.4;
+		System.out.println(penSize);
 		StdDraw.setPenRadius(penSize);
 		StdDraw.show();
+		if(decor){ StdDraw.clear(StdDraw.BLACK); }
 		StdDraw.setXscale(0, boardSize);
 		StdDraw.setYscale(0, boardSize);
 		StdDraw.setPenColor(StdDraw.PINK);
 		StdDraw.filledSquare(x+0.5, y+0.5, 0.5);
+		if(!decor) StdDraw.setPenColor(StdDraw.BLACK);
 		placeL(x+0.5,y+0.5,0,0,boardSize/2);
 	}
 	private static void placeL(double holeX, double holeY, int xbot, int ybot, int size){
@@ -54,8 +59,8 @@ public class BoardTiling {
 		if(size <= 0){
 			return ;
 		}
+		if(decor) { StdDraw.setPenColor(randomColor()); }
 		
-		StdDraw.setPenColor(randomColor());
 		if(holeX > cenX && holeY > cenY){
 			drawL(cenX,cenY,0);
 			if(size > 1){
@@ -94,7 +99,8 @@ public class BoardTiling {
 	}
 	
 	private static void drawL(double x, double y, int degree){
-		double shift = penSize*boardSize/0.8/4;
+		double shift = 0;
+		if(decor) {	shift = penSize*boardSize/3.6; }
 		switch(degree){
 		case 90:
 			StdDraw.line(x-shift,y+shift,x+1-shift,y+shift);
@@ -131,16 +137,18 @@ public class BoardTiling {
 	}
 	
 	public static Color randomColor(){
-		int r = 70+(int)Math.floor(Math.random()*150);
-		int g = 70+(int)Math.floor(Math.random()*150);
-		int b = 70+(int)Math.floor(Math.random()*150);
-		return new Color(r,g,b,240);
+		int r = 70 + (int)Math.floor(Math.random()*160);
+		int g = 70 + (int)Math.floor(Math.random()*160);
+		int b = 70 + (int)Math.floor(Math.random()*160);
+		return new Color(r,g,b);
 		
 	}
 	
 	public static void main(String[]args){
 		setScreenSize(1000);
-		tileBoard(7);
+		long time = System.nanoTime();
+		tileBoard(5,true);
+		System.out.println("Time: " + (System.nanoTime()-time) + " ns.");
 		
 	}
 	
