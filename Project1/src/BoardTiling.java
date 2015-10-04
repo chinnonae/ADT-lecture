@@ -3,12 +3,11 @@ import java.awt.Color;
 
 public class BoardTiling {
 	
-	static final int DEFAULT_SCREEN_SIZE = 800; 
-	static int screenSize = DEFAULT_SCREEN_SIZE;
-	static BoardTiling instance;
-	static double penSize;
-	static int boardSize;
-	static boolean decor;
+	private static final int DEFAULT_SCREEN_SIZE = 800; 
+	private static int screenSize = DEFAULT_SCREEN_SIZE;
+	private static double penSize;
+	private static int boardSize;
+	private static boolean decor;
 	
 	public static void tileBoard(int size, boolean decor){
 		double n = Math.pow(2, size);
@@ -17,31 +16,20 @@ public class BoardTiling {
 		tileBoard(size, x, y, decor);
 	}
 	
-	private BoardTiling(){
-		init();
-	}
-	
-	private void init(){
-		setScreenSize(DEFAULT_SCREEN_SIZE);
-	}
-	
 	public static void setScreenSize(int size){
 		screenSize = size;
-		StdDraw.setCanvasSize(screenSize, screenSize);
 	}
 	
-	public static BoardTiling getInstance(){
-		if(instance == null){
-			instance = new BoardTiling();
-		}
-		return instance;
+	public static void clear(){
+		if(decor)StdDraw.clear(StdDraw.BLACK);
+		else StdDraw.clear();
 	}
 	
 	public static void tileBoard(int size, int x, int y, boolean decoration){
+		StdDraw.setCanvasSize(screenSize, screenSize);
 		decor = decoration;
 		boardSize = (int) Math.pow(2, size);
 		penSize = (((double)boardSize)+screenSize)/(boardSize*screenSize)*0.4;
-		System.out.println(penSize);
 		StdDraw.setPenRadius(penSize);
 		StdDraw.show();
 		if(decor){ StdDraw.clear(StdDraw.BLACK); }
@@ -144,12 +132,6 @@ public class BoardTiling {
 		
 	}
 	
-	public static void main(String[]args){
-		setScreenSize(1000);
-		long time = System.nanoTime();
-		tileBoard(5,true);
-		System.out.println("Time: " + (System.nanoTime()-time) + " ns.");
-		
-	}
+
 	
 }
