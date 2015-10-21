@@ -63,7 +63,7 @@ public class TreeCell {
 	public static void printTree(TreeCell root, int level ) {
 		if (root != null) {
 			printTree(root.right, level+1);
-			for (int i=0; i<level; i++) System.out.print(" ");
+			for (int i=0; i<level; i++) System.out.print("   ");
 			System.out.println(root.getData());
 			System.out.println();
 			printTree(root.left, level+1);

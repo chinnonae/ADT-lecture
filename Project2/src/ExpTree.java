@@ -44,7 +44,7 @@ public class ExpTree {
 	}
 
 	public static void main(String[] args) {
-		Exp root = makeExpTree(Util.IntoPos("1+8+9*2"));
+		Exp root = makeExpTree(Util.IntoPos("7*5+(8+9*2)"));
 		printExpTree(root, 0);
 		System.out.println(root.eval());
 	}

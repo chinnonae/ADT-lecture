@@ -11,29 +11,33 @@ public class Util {
 		while(index < infix.length()){
 			char c = infix.charAt(index);
 			switch(c){
-			case '(': 
-				stack.push(c);
-				break;
 			case '+': case '-':
 				stack.push(c);
-				if(index+2 < infix.length() && infix.charAt(index+1) != '(' && infix.charAt(index+2) != '*')
+				if(index+2 < infix.length() && infix.charAt(index+1) != '(' && infix.charAt(index+2) != '*' && infix.charAt(index+2) != '/' ){
+					pop = true;
+				}
+				break;
+			case '*': case '/':
+				stack.push(c);
+				if(infix.charAt(index+1) != '(' ) 
 					pop = true;
 				break;
-			case '*':
+			case '(':
 				stack.push(c);
-				if(infix.charAt(index+1)!='(') pop = true;
 				break;
 			case ')':
-				while(!stack.isEmpty() && stack.peek()!='('){
+				while(!stack.empty() && stack.peek() != '(') 
 					post.append(stack.pop());
-				}
-				if(!stack.isEmpty()) stack.pop();
+				if(!stack.empty() && stack.peek() == '(')stack.pop();
+				if(!stack.empty() && stack.peek() != '(')post.append(stack.pop());
 				break;
 			default:
+				
 				post.append(c);
 				if(pop && !stack.isEmpty()){
-					post.append(stack.pop());
-					while(index+1 < infix.length() && !stack.isEmpty() && stack.peek() != '(' && stack.peek() == '+' && infix.charAt(index+1) != '*'){
+					char cc = stack.pop();
+					if(cc != '(') post.append(cc);
+					while(index+1 < infix.length() && !stack.isEmpty() && stack.peek() != '(' && (stack.peek() == '+' || stack.peek() == '-') && (infix.charAt(index+1) != '*' && infix.charAt(index+1) != '/')){
 						post.append(stack.pop());
 					}
 					pop = false;
@@ -41,11 +45,9 @@ public class Util {
 			}
 			index++;
 		}
-		while(!stack.isEmpty()){
-			char element = stack.pop();
-			if(element != '(') post.append(element);
-		}
+		while(!stack.empty() && stack.peek() != '(') post.append(stack.pop());
 		return post.toString();
+
 	}
 
 	public static TreeCell makeExpTree(String postfix){
@@ -111,7 +113,7 @@ public class Util {
 			return right+left;
 		case '-':
 			return left-right;
-		case '*':
+		case '*': 
 			return right*left;
 		case '/':
 			return left/right;
@@ -120,19 +122,23 @@ public class Util {
 	}
 
 	public static void main(String[]args){
-		System.out.println(IntoPos("(8+9*(4+5*7+6))+3*5+4"));
-		System.out.println(IntoPos("1+8+9*2"));
-		System.out.println(IntoPos("7*5+(8+9*2)"));
-		System.out.println(IntoPos("7*5+((8+9)*2)"));
-		System.out.println(IntoPos("((5+6*2*(4+8)))*(2+2)"));
-
-		TreeCell root = makeExpTree(IntoPos("((5+6*2*(4+8)))*(2+2)"));
+		//		System.out.println(IntoPos("(8+9*(4+5*7+6))+3*5+4"));
+		//		System.out.println(IntoPos("1+8+9*2"));
+		//		System.out.println(IntoPos("7*5+(8+9*2)"));
+		//		System.out.println(IntoPos("7*5+((8+9)*2)"));
+		//		System.out.println(IntoPos("((5+6*2*(4+8)))*(2+2)"));
+		System.out.println(IntoPos("(9*(8+2))*((9+5)*5)+(((5*(1+5)*2+9*9)))"));
+		TreeCell root = makeExpTree(IntoPos("((9*(8+2))*((9+5)*5)+(((5*(1+5)*2+9*9)))"));
+//		TreeCell root = makeExpTree(IntoPos("(1+2)+(3+8)"));
+		
 		TreeCell.printTree(root, 0);
 
 		printPrefix(root);
 		System.out.println();
 		printPostfix(root);
 		System.out.println();
+		System.out.println("Expected postfix: 982+*95+5**515+*2*99*++" );
+//		System.out.println("Expected postfix: 12+38++");
 		printInfix(root);
 		System.out.println();
 		System.out.println(eval(root));
