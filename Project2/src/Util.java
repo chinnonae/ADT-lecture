@@ -121,29 +121,6 @@ public class Util {
 		return 0;
 	}
 
-	public static void main(String[]args){
-		//		System.out.println(IntoPos("(8+9*(4+5*7+6))+3*5+4"));
-		//		System.out.println(IntoPos("1+8+9*2"));
-		//		System.out.println(IntoPos("7*5+(8+9*2)"));
-		//		System.out.println(IntoPos("7*5+((8+9)*2)"));
-		//		System.out.println(IntoPos("((5+6*2*(4+8)))*(2+2)"));
-		System.out.println(IntoPos("(9*(8+2))*((9+5)*5)+(((5*(1+5)*2+9*9)))"));
-		TreeCell root = makeExpTree(IntoPos("((9*(8+2))*((9+5)*5)+(((5*(1+5)*2+9*9)))"));
-//		TreeCell root = makeExpTree(IntoPos("(1+2)+(3+8)"));
-		
-		TreeCell.printTree(root, 0);
-
-		printPrefix(root);
-		System.out.println();
-		printPostfix(root);
-		System.out.println();
-		System.out.println("Expected postfix: 982+*95+5**515+*2*99*++" );
-//		System.out.println("Expected postfix: 12+38++");
-		printInfix(root);
-		System.out.println();
-		System.out.println(eval(root));
-	}
-
 
 
 }
